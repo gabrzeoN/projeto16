@@ -7,3 +7,13 @@ export async function insertNewUrl(userId, url, shortenedUrl){
         [userId, url, shortenedUrl]
     );
 }
+
+export async function selectUrl(urlId){
+    const url = await db.query(`
+        SELECT *
+        FROM urls
+        WHERE id = $1;`,
+        [urlId]
+    );
+    return url.rows[0];
+}
