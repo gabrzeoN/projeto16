@@ -7,3 +7,13 @@ export async function insertNewSession(userId, token){
         [userId, token]
     );
 }
+
+export async function selectSession(token){
+    const session = await db.query(`
+        SELECT *
+        FROM sessions
+        WHERE token = $1 AND status = true;`,
+        [token]
+    );
+    return session.rows[0];
+}
