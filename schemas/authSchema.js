@@ -3,7 +3,7 @@ import joi from "joi";
 export const signUpSchema = joi.object({
     name: joi.string().trim().required(),
     email: joi.string().trim().email().required(),
-    password: joi.string().trim().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+    password: joi.string().trim().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(), // TODO: change REGEX from {3, 30} to {8, 30}.
     repeatPassword: joi.required().valid(joi.ref('password'))
 });
 
