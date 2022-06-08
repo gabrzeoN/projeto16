@@ -7,3 +7,13 @@ export async function insertNewUser(name, email, encryptedPassword){
         [name, email, encryptedPassword]
     );
 }
+
+export async function selectUser(email){
+    const user = await db.query(`
+        SELECT *
+        FROM users
+        WHERE email = $1;`,
+        [email]
+    );
+    return user.rows[0];
+}

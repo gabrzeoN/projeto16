@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { v4 as uuid} from "uuid";
-import db from "../config/db.js";
 import { insertNewUser } from "../repositories/usersRepository.js";
+import { insertNewSession } from "../repositories/sessionsRepository.js";
 
 export async function signUp(req, res){
     const { name, email, password } = req.body;
@@ -16,22 +16,16 @@ export async function signUp(req, res){
 }
 
 export async function signIn(req, res){
-    const { email, password } = req.body;
-    console.log(req.body) // TODO: erase me
+    const { password } = req.body;
+    const { user } = res.locals;
     try{
-        const encryptedPassword = await bcrypt.hash(password, 10);
-        await db.query(`INSERT INTO
-            users(name, email, password)
-            VALUES ($1, $2, $3);`,
-            [name, email, encryptedPassword]
-        );
-        res.sendStatus(201);
-    }catch(error){
-        res.sendStatus(500);
+        const correctPassword = await bcrypt.compare(password, user.password);
+        if(!correctPassword) return res.status(401).send("Email and password doesn't match!");
+        const token = uuid();
+        await insertNewSession(user.id, token);
+        return res.status(200).send(token);
+    }catch(err){
+        console.log(err); // TODO: erase me
+        return res.sendStatus(500);
     }
 }
-
-// middware
-// controller
-// service
-// repository

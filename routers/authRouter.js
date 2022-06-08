@@ -7,6 +7,6 @@ import { validSignUp, validSignIn } from "../middwares/validateAuthMiddwares.js"
 const authRouter = Router();
 
 authRouter.post("/sign-up", validSchema(signUpSchema), validSignUp, signUp);
-authRouter.post("/sign-in", signIn);
+authRouter.post("/sign-in", validSchema(signInSchema), validSignIn, signIn);
 
 export default authRouter;

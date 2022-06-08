@@ -1,17 +1,10 @@
-import db from "../config/db.js";
+import { selectUser } from "../repositories/usersRepository.js";
 
 export async function validSignUp(req, res, next){
     const { email } = req.body;
     try{
-        const user = await db.query(`
-            SELECT *
-            FROM users
-            WHERE email = $1;`,
-            [email]
-        );
-        if(user.rows[0]){
-            return res.status(409).send("User already exists!");
-        }
+        const user = await selectUser(email);
+        if(user) return res.status(409).send("User already exists!");
         next();
     }catch(err){
         console.log(err); // TODO : erase me
@@ -22,19 +15,12 @@ export async function validSignUp(req, res, next){
 export async function validSignIn(req, res, next){
     const { email } = req.body;
     try{
-        const user = await db.query(`
-            SELECT *
-            FROM users
-            WHERE email = $1;`,
-            [email]
-        );
-        console.log(user.rows)
-        if(user.rows[0]){
-            return res.status(409).send("User already exists!");
-        }
+        const user = await selectUser(email);
+        if(!user)return res.status(401).send("Email and password doesn't match!");
+        res.locals.user = user;
         next();
     }catch(err){
-        console.log(err) // TODO : erase me
-        res.sendStatus(500);
+        console.log(err); // TODO : erase me
+        return res.sendStatus(500);
     }
 }
