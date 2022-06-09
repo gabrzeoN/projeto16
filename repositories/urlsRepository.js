@@ -8,7 +8,7 @@ export async function insertNewUrl(userId, url, shortenedUrl){
     );
 }
 
-export async function selectUrl(urlId){
+export async function selectUrlById(urlId){
     const url = await db.query(`
         SELECT *
         FROM urls
@@ -16,4 +16,24 @@ export async function selectUrl(urlId){
         [urlId]
     );
     return url.rows[0];
+}
+
+export async function selectUrlByShortUrl(shortUrl){
+    const url = await db.query(`
+        SELECT original
+        FROM urls
+        WHERE "shortened" = $1;`,
+        [shortUrl]
+    );
+    return url.rows[0]?.original;
+}
+
+export async function updateUrlViews(shortUrl){
+    await db.query(`
+        UPDATE urls 
+        SET views = views + 1
+        WHERE shortened = $1;`,
+        [shortUrl]
+    );
+    return;
 }

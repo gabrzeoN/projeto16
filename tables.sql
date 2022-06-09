@@ -20,6 +20,5 @@ CREATE TABLE urls(
     original text NOT NULL,
     shortened text UNIQUE NOT NULL,
     views integer NOT NULL DEFAULT 0,
-    "createdAt" timestamp with time zone DEFAULT NOW() NOT NULL,
-    status boolean DEFAULT true NOT NULL
+    "createdAt" timestamp with time zone DEFAULT NOW() NOT NULL
 );

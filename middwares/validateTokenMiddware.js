@@ -1,6 +1,6 @@
 import { selectSession } from "../repositories/sessionsRepository.js";
 
-export default async function validToken(req, res, next){
+export default async function valid(req, res, next){
     const {authorization} = req.headers;
     const token = authorization?.replace("Bearer", "").trim();
     if(!token) return res.status(401).send("Token not found!");
