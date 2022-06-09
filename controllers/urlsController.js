@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { insertNewUrl, selectUrlById, selectUrlByShortUrl, updateUrlViews } from "../repositories/urlsRepository.js";
+import { insertNewUrl, selectUrlById, selectUrlByShortUrl, updateUrlViews, deleteUrl } from "../repositories/urlsRepository.js";
 
 export async function createShortenedUrl(req, res){
     const { url } = req.body;
@@ -38,6 +38,22 @@ export async function openShortenedUrl(req, res){
         if(!url) return res.status(404).send("URL not found!");
         updateUrlViews(shortUrl);
         return res.redirect(200, url);
+    }catch(err){
+        console.log(err); // TODO: erase me
+        return res.sendStatus(500);
+    }
+}
+
+export async function deleteShortenedUrl(req, res){
+    const { urlId } = req.params;
+    const { userId } = res.locals.session;
+    try{
+        const url = await selectUrlById(urlId);
+        if(!url) return res.status(404).send("URL not found!");
+        const permission = url.userId === userId;
+        if(!permission) return res.status(401).send("You are not authorized to delete this URL!");
+        await deleteUrl(urlId);        
+        return res.status(204).send("URL successfuly deleted!");
     }catch(err){
         console.log(err); // TODO: erase me
         return res.sendStatus(500);

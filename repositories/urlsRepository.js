@@ -37,3 +37,12 @@ export async function updateUrlViews(shortUrl){
     );
     return;
 }
+
+export async function deleteUrl(urlId){
+    const url = await db.query(`
+        DELETE FROM urls
+        WHERE id = $1;`,
+        [urlId]
+    );
+    return url;
+}
