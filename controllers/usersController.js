@@ -1,4 +1,4 @@
-import { insertNewUrl, selectUrlById, selectUrlByShortUrl, selectUrlByUserId, countAllViews, deleteUrl } from "../repositories/urlsRepository.js";
+import { selectUrlByUserId, countAllViews } from "../repositories/urlsRepository.js";
 import { selectUserById } from "../repositories/usersRepository.js";
 
 export async function getUser(req, res){
