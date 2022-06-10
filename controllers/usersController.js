@@ -12,7 +12,6 @@ export async function getUser(req, res){
         const visitCount = await countAllViews(userId);
         return res.status(200).send({...user, visitCount, shortenedUrls: userUrls});
     }catch(err){
-        console.log(err); // TODO: erase me
         return res.sendStatus(500);
     }
 }

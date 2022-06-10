@@ -10,7 +10,6 @@ export default async function valid(req, res, next){
        res.locals.session = session;
        next();
     }catch (err){
-        console.log(err); // TODO : erase me
         return res.sendStatus(500);
     }
 }

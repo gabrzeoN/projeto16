@@ -10,7 +10,6 @@ export async function signUp(req, res){
         await insertNewUser(name, email, encryptedPassword);
         return res.sendStatus(201);
     }catch(err){
-        console.log(err); // TODO: erase me
         return res.sendStatus(500);
     }
 }
@@ -25,7 +24,6 @@ export async function signIn(req, res){
         await insertNewSession(user.id, token);
         return res.status(200).send(token);
     }catch(err){
-        console.log(err); // TODO: erase me
         return res.sendStatus(500);
     }
 }

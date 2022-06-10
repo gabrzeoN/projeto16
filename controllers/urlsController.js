@@ -9,7 +9,6 @@ export async function createShortenedUrl(req, res){
         await insertNewUrl(userId, url, shortenedUrl);
         return res.status(201).send({shortUrl: shortenedUrl});
     }catch(err){
-        console.log(err); // TODO: erase me
         return res.sendStatus(500);
     }
 }
@@ -26,7 +25,6 @@ export async function getShortenedUrl(req, res){
         }        
         return res.status(200).send(newUrlObject);
     }catch(err){
-        console.log(err); // TODO: erase me
         return res.sendStatus(500);
     }
 }
@@ -39,7 +37,6 @@ export async function openShortenedUrl(req, res){
         incrementUrlViews(shortUrl);
         return res.redirect(200, url);
     }catch(err){
-        console.log(err); // TODO: erase me
         return res.sendStatus(500);
     }
 }
@@ -55,7 +52,6 @@ export async function deleteShortenedUrl(req, res){
         await deleteUrl(urlId);        
         return res.status(204).send("URL successfuly deleted!");
     }catch(err){
-        console.log(err); // TODO: erase me
         return res.sendStatus(500);
     }
 }

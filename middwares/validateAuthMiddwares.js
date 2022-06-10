@@ -7,7 +7,6 @@ export async function validSignUp(req, res, next){
         if(user) return res.status(409).send("User already exists!");
         next();
     }catch(err){
-        console.log(err); // TODO : erase me
         return res.sendStatus(500);
     }
 }
@@ -20,7 +19,6 @@ export async function validSignIn(req, res, next){
         res.locals.user = user;
         next();
     }catch(err){
-        console.log(err); // TODO : erase me
         return res.sendStatus(500);
     }
 }
