@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { insertNewUrl, selectUrlById, selectUrlByShortUrl, updateUrlViews, deleteUrl } from "../repositories/urlsRepository.js";
+import { insertNewUrl, selectUrlById, selectUrlByShortUrl, incrementUrlViews, deleteUrl } from "../repositories/urlsRepository.js";
 
 export async function createShortenedUrl(req, res){
     const { url } = req.body;
@@ -36,7 +36,7 @@ export async function openShortenedUrl(req, res){
     try{
         const url = await selectUrlByShortUrl(shortUrl);
         if(!url) return res.status(404).send("URL not found!");
-        updateUrlViews(shortUrl);
+        incrementUrlViews(shortUrl);
         return res.redirect(200, url);
     }catch(err){
         console.log(err); // TODO: erase me

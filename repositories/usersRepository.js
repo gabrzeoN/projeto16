@@ -17,3 +17,13 @@ export async function selectUser(email){
     );
     return user.rows[0];
 }
+
+export async function selectUserById(userId){
+    const user = await db.query(`
+        SELECT id, name
+        FROM users
+        WHERE id = $1;`,
+        [userId]
+    );
+    return user.rows[0];
+}

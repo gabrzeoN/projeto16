@@ -18,6 +18,16 @@ export async function selectUrlById(urlId){
     return url.rows[0];
 }
 
+export async function selectUrlByUserId(userId){
+    const urls = await db.query(`
+        SELECT id, shortened AS "shortUrl", original AS url, views AS "visitCount"
+        FROM urls
+        WHERE "userId" = $1;`,
+        [userId]
+    );
+    return urls.rows;
+}
+
 export async function selectUrlByShortUrl(shortUrl){
     const url = await db.query(`
         SELECT original
@@ -28,7 +38,7 @@ export async function selectUrlByShortUrl(shortUrl){
     return url.rows[0]?.original;
 }
 
-export async function updateUrlViews(shortUrl){
+export async function incrementUrlViews(shortUrl){
     await db.query(`
         UPDATE urls 
         SET views = views + 1
@@ -36,6 +46,16 @@ export async function updateUrlViews(shortUrl){
         [shortUrl]
     );
     return;
+}
+
+export async function countAllViews(userId){
+    const allViews = await db.query(`
+        SELECT SUM(views)
+        FROM urls
+        WHERE "userId" = $1;`,
+        [userId]
+    );
+    return allViews.rows[0]?.sum;
 }
 
 export async function deleteUrl(urlId){
